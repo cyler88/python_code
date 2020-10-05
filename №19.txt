@@ -1,0 +1,111 @@
+19
+#####################################
+#19
+import random
+import string
+import unittest
+
+
+# s1 = input("Первая строка ")
+# s2 = input("Вторая строка ")
+s1 = "Первая строка"
+s2 = "строка"
+
+
+def build_block(size):
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
+
+
+def revise(str1, str2):
+    print("Найти строку '", str2, "' в строке '", str1, "'", sep="")
+    conclusion = False
+    if len(str1) >= len(str2):
+        for i in range((len(str1) - len(str2)) + 1):          # Получаем номер каждой буквы в первой строке для сравнения по буквам далее
+            conclusion = True                                 # Переменная для понимания нашлась или нет строка
+            for j in range(len(str2)):                        # Получаем номер каждой буквы во второй строке для сравнения по буквам далее
+                print("Элементы под индексом (", i, ") ", str1[i + j], " и (", j, ") ", str2[j], sep="", end="")
+                if str1[i + j] != str2[j]:                    # Сверяем каждую букву первой строки с буквой второй строкой для выявления не совпадений
+                    print(" - не совпадают")
+                    conclusion = False                        # Когда попадаются не совпадения меняем переменную для вывода в конце
+                    break                                     # Когда находим хоть одно не совпадение букв завершаем этот цикл
+                else:
+                    print(" - совпадают")
+            if conclusion:                                    # Если буквы совпадают
+                return True                                   # завершаем первый цикл
+    return False
+
+
+if revise(s1, s2) is True:
+    print("В первой строке найдена вторая строка", "\n")
+else:
+    print("Вторая строка не найдена в первой либо превышает её", "\n")
+
+
+def test1():
+    try:
+        fail = False
+        for i in range(10):
+            x = build_block(13)
+            y = build_block(10)
+            if (y in x) != revise(x, y):
+                fail = True
+                break
+        if fail:
+            print("TEST 1 FAIL")
+        else:
+            print("TEST 1 PASS")
+    except Exception:
+        print("TEST 1 Exception FAIL")
+
+
+def test2():
+    try:
+        fail = False
+        a = ["", "", build_block(10)]
+        for i in range(3):
+            # print("if (a[", i, "] in a[", (-i + (-1)), "]) != revise(a[", (i + (-1)), "], a[", i, "]):", sep="")
+            if (a[i] in a[i + (-1)]) != revise(a[i + (-1)], a[i]):
+                fail = True
+                break
+        if fail:
+            print("TEST 2 FAIL")
+        else:
+            print("TEST 2 PASS")
+    except Exception:
+        print("TEST 2 Exception FAIL")
+
+
+def test3():
+    try:
+        fail = False
+        x = build_block(10 ** 5)
+        y = build_block(13)
+        if (y in x) != revise(x, y):
+            fail = True
+        if fail:
+            print("TEST 3 FAIL")
+        else:
+            print("TEST 3 PASS")
+    except Exception:
+        print("TEST 3 Exception FAIL")
+
+
+def test4():
+    n = revise("Первая строка", "строка")
+    m = revise("Первая строка", "")
+    if n and m is True:
+        print("TEST 4 PASS")
+    else:
+        print("TEST 4 FAIL")
+
+
+print()
+test1()
+print()
+test2()
+print()
+test3()
+print()
+test4()
+
+#####################################
